@@ -1,0 +1,6 @@
+[submodule "submodules/shellcmd.py"]
+	path = submodules/shellcmd.py
+	url = https://github.com/tom-seddon/shellcmd.py
+[submodule "submodules/raddebugger"]
+	path = submodules/raddebugger
+	url = https://github.com/tom-seddon/raddebugger
