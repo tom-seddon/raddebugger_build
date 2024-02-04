@@ -6,13 +6,14 @@ set(CMAKE_SKIP_INSTALL_RULES YES)
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT raddebugger_build)
 
 cmake_path(SET raddebugger_path submodules/raddebugger)
+cmake_path(ABSOLUTE_PATH raddebugger_path
+  NORMALIZE
+  BASE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  OUTPUT_VARIABLE raddebugger_path)
+message(STATUS "raddebugger_path: ${raddebugger_path}")
 
-# https://cmake.org/cmake/help/latest/command/source_group.html
-#
-# Couldn't get this to do anything obviously useful.
-
-# source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/)
-
+cmake_path(NATIVE_PATH raddebugger_path raddebugger_path_native)
+message(STATUS "raddebugger_path_native: ${raddebugger_path_native}")
 
 file(GLOB_RECURSE files
   ${raddebugger_path}/src/*.c
@@ -20,6 +21,8 @@ file(GLOB_RECURSE files
   ${raddebugger_path}/src/*.h
   ${raddebugger_path}/src/*.mdesk
   ${raddebugger_path}/src/*.rc)
+
+source_group(TREE ${raddebugger_path} FILES ${files})
 
 add_executable(raddebugger)
 target_sources(raddebugger PRIVATE
@@ -42,14 +45,6 @@ add_custom_target(raddebugger_build
   COMMAND ${CMAKE_COMMAND} -E time bin/gmake.exe -r -f Makefile.build.mak CONFIG=$<CONFIG>
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
-cmake_path(ABSOLUTE_PATH raddebugger_path
-  NORMALIZE
-  OUTPUT_VARIABLE raddebugger_path_abs)
-cmake_path(NATIVE_PATH raddebugger_path_abs raddebugger_path_abs_native)
 
 set_target_properties(raddebugger_build PROPERTIES
-  VS_DEBUGGER_COMMAND "${raddebugger_path_abs_native}\\build\\raddbg.exe")
-
-# message(STATUS "raddebugger_path: ${raddebugger_path}")
-# message(STATUS "raddebugger_path_abs: ${raddebugger_path_abs}")
-# message(STATUS "raddebugger_path_abs_native: ${raddebugger_path_abs_native}")
+  VS_DEBUGGER_COMMAND "${raddebugger_path_native}\\build\\raddbg.exe")
