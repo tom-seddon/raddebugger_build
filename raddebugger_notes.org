@@ -1,0 +1,65 @@
+#+STARTUP: overview
+
+
+
+* Transient notes
+** Debugger debugger
+
+#+begin_example
+---------------------------
+Microsoft Visual Studio
+---------------------------
+Unable to start program 'C:\tom\github\raddebugger_build\build\vs2019\x64\debug\raddebugger_build'.
+
+Access is denied.
+
+---------------------------
+OK   
+---------------------------
+#+end_example
+
+** Window placement
+
+"Just" store WINDOWPLACEMENT in config file. Serialize as binary
+string like b2. If anything goes wrong, Windows will deal with it.
+Worst case: the window doesn't end up where you expect.
+
+Can get rid of most of the existing functions. Only
+=os_dim_from_monitor= remains vaguely relevant, best replaced with
+=os_dim_from_primary_monitor= for filling in defaults if no
+WINDOWPLACEMENT available.
+
+//internal OS_HandleArray os_push_monitors_array(Arena *arena);
+//internal OS_Handle      os_primary_monitor(void);
+//internal OS_Handle      os_monitor_from_window(OS_Handle window);
+//internal String8        os_name_from_monitor(Arena *arena, OS_Handle monitor);
+//internal Vec2F32        os_dim_from_monitor(OS_Handle monitor);
+//internal B32            os_window_is_maximized(OS_Handle window);
+//internal void           os_window_set_monitor(OS_Handle window, OS_Handle monitor);
+
+
+*** os_ functions
+
+**** =OS_HandleArray os_push_monitors_array(Arena *arena);=
+
+Used to map monitor name to monitor.
+
+**** =OS_Handle      os_primary_monitor(void);=
+
+Used to fill in defaults.
+
+**** =OS_Handle      os_monitor_from_window(OS_Handle window);=
+
+Used when saving window config.
+
+**** =String8        os_name_from_monitor(Arena *arena, OS_Handle monitor);=
+
+Used when saving window config.
+
+**** =Vec2F32        os_dim_from_monitor(OS_Handle monitor);=
+
+Used to fill in defaults.
+
+
+
+* eof.
