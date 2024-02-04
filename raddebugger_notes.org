@@ -60,6 +60,37 @@ Used when saving window config.
 
 Used to fill in defaults.
 
+** Fails to debug debug b2
 
+Call stack for start of =main=
+
+#+begin_example
+  b2.exe!SDL_main(int argc=1, char * * argv=0x00000239e043e480) Line 1609	C++
+  b2.exe!main_getcmdline() Line 80	C
+  b2.exe!main(int argc=1, char * * argv=0x00000239e042c740) Line 95	C
+  b2.exe!invoke_main() Line 79	C++
+  b2.exe!__scrt_common_main_seh() Line 288	C++
+  b2.exe!__scrt_common_main() Line 331	C++
+  b2.exe!mainCRTStartup(void * __formal=0x0000004ea8db5000) Line 17	C++
+  kernel32.dll!BaseThreadInitThunk()	Unknown
+  ntdll.dll!RtlUserThreadStart()	Unknown
+#+end_example
+
+Note entry points list in =DEMON_EventKind_HandshakeComplete= and
+presence in b2 debug:
+
+| Entry point          | Console | Gui |
+|----------------------+---------+-----|
+| =WinMain=            |   y     | y   |
+| =wWinMain=           |         |     |
+| =main=               |   y     | y   |
+| =wmain=              |   y     | y   |
+| =WinMainCRTStartup=  |         |  y  |
+| =wWinMainCRTStartup= |         |     |
+| =mainCRTStartup=     |   y     |     |
+| =wmainCRTStartup=    |         |     |
+
+As b2 builds for all startup types, it will have multiple entry
+points.
 
 * eof.
